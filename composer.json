@@ -1,0 +1,37 @@
+{
+    "name": "coderbox/wpc2-google-doc",
+    "description": "W",
+    "license": "GPL-3.0+",
+    "version": "1.0.0",
+    "keywords": [
+        "wordpress",
+        "plugin"
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "homepage": "https://github.com/coderboxnet/wpc2-google-doc/",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Javier Moran",
+            "email": "javiery2k@gmail.com"
+        },
+        {
+            "name": "David Camargo",
+            "email": "david.camargo@gmail.com"
+        },
+        {
+            "name": "Osvaldo Galvez",
+            "email": "osvaldo.galvez@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Wpc2GoogleDoc\\": "src/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    }
+}
