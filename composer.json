@@ -28,10 +28,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Wpc2GoogleDoc\\": "src/"
+            "Wpc2GoogleDoc\\": "app/"
         }
-    },
-    "require-dev": {
-        "squizlabs/php_codesniffer": "*"
     }
 }
