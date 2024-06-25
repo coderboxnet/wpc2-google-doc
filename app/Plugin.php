@@ -23,7 +23,7 @@ class Plugin {
 	 * Activate plugin
 	 */
 	public function activate() {}
-	
+
 	/**
 	 * Deactivate plugin
 	 */

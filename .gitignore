@@ -48,3 +48,6 @@ wp-config.php
 #/wp-content/themes
 
 /vendor/
+/build/
+/build-zip/
+/.vscode/

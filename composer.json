@@ -8,7 +8,7 @@
         "plugin"
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=8.0"
     },
     "homepage": "https://github.com/coderboxnet/wpc2-google-doc/",
     "type": "wordpress-plugin",
@@ -30,5 +30,21 @@
         "psr-4": {
             "Wpc2GoogleDoc\\": "app/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "php-stubs/wordpress-stubs": "*",
+        "guzzlehttp/guzzle": "*"
+    },
+    "scripts": {
+        "build": [
+            "php wpc2-google-doc-zip.php"
+        ]
     }
 }

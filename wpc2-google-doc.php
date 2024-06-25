@@ -23,5 +23,5 @@ if ( class_exists( 'Wpc2GoogleDoc\Plugin' ) ) {
 	$the_plugin = new Plugin();
 }
 
-register_activation_hook( __FILE__, [ $the_plugin, 'activate' ] );
-register_deactivation_hook( __FILE__, [ $the_plugin, 'deactivate' ] );
+register_activation_hook( __FILE__, array( $the_plugin, 'activate' ) );
+register_deactivation_hook( __FILE__, array( $the_plugin, 'deactivate' ) );
