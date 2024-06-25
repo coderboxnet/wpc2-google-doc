@@ -44,7 +44,7 @@
     },
     "scripts": {
         "build": [
-            "php wpc2-google-doc-zip.php"
+            "php scripts/build-plugin.php"
         ]
     }
 }
