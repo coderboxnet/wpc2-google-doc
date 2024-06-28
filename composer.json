@@ -8,7 +8,8 @@
         "plugin"
     ],
     "require": {
-        "php": ">=8.0"
+        "php": ">=7.4",
+        "google/apiclient": "^2.15.0"
     },
     "homepage": "https://github.com/coderboxnet/wpc2-google-doc/",
     "type": "wordpress-plugin",
@@ -42,9 +43,16 @@
         "php-stubs/wordpress-stubs": "*",
         "guzzlehttp/guzzle": "*"
     },
+   "extra": {
+        "google/apiclient-services": [
+            "Drive",
+            "YouTube"
+        ]
+    },
     "scripts": {
         "build": [
             "php scripts/build-plugin.php"
-        ]
+        ],
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
     }
 }
