@@ -28,7 +28,7 @@ class Plugin {
 	 * Activate plugin
 	 */
 	public function activate() {
-        
+
     }
 
 	/**
@@ -46,11 +46,11 @@ class Plugin {
         add_action( 'wp_enqueue_scripts', $this->enqueuePluginScript() );
         add_filter( 'post_row_actions', array( $this, 'addCustomPostLink' ), 10, 2 );
         add_action( 'wp_ajax_push_doc_action', array( $this, 'pushDocActionCallback' ) );
-        
+
     }
 
     public function addCustomPostLink($actions, $post) {
-        
+
         $actions['google'] = '<a href="#" class="push-google-doc" aria-label="Push to Google Doc" data-id="' . $post->ID . '">Push to Google Doc</a>';
         return $actions;
     }
@@ -59,7 +59,7 @@ class Plugin {
 
         wp_send_json_success('Action completed successfully.');
     }
-    
+
     // Enqueue JavaScript where you call the AJAX action
     public function enqueuePluginScript() {
         if ( is_admin() ) {
@@ -117,7 +117,7 @@ class Plugin {
         $clientId = $options['client_id'] ?? "";
         echo '<input type="text" id="client_id" name="wpc2_google_doc_options[client_id]" value="' . esc_attr( $clientId ) . '" />';
     }
-	
+
 
     public function googleClient() {
         $this->client = new \Google_Client();
@@ -142,7 +142,7 @@ class Plugin {
         // Handle the response (e.g., get the document ID)
         return $file->id;
     }
-    
+
 
 
 }
