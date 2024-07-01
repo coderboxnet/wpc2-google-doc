@@ -20,17 +20,25 @@ class Plugin {
 	}
 
 	/**
-	 * Activate plugin
-	 */
-	public function activate() {}
-
-	/**
-	 * Deactivate plugin
-	 */
-	public function deactivate() {}
-
-	/**
 	 * Initialize plugin
 	 */
-	private function init() {}
+	private function init() {
+		new PostBackup();
+	}
+
+	/**
+	 * Activate plugin.
+	 * This method can be used for activation routines if needed.
+	 */
+	public function activate() {
+		// Activation code if needed
+	}
+
+	/**
+	 * Deactivate plugin.
+	 * This method can be used for deactivation routines if needed.
+	 */
+	public function deactivate() {
+		// Deactivation code if needed
+	}
 }
