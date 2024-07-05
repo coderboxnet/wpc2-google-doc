@@ -28,9 +28,9 @@
 		}
 	],
 	"autoload": {
-		"psr-4": {
-			"Wpc2GoogleDoc\\": "app/"
-		}
+		"classmap": [
+			"app/classes/"
+		]
 	},
 	"config": {
 		"allow-plugins": {

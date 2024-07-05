@@ -14,16 +14,16 @@
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  *
- * @package wpc2gdoc
+ * @package wpc2-google-doc
  */
 
-// Enable our autload for 3rd party libraries.
+// Enable our libraries autload.
 require_once 'vendor/autoload.php';
 
-use Wpc2GoogleDoc\Plugin;
+// Init our plugin.
+$wpc2gdoc_plugin = new \CODERBOX\Wpc2GoogleDoc\WPC2_Google_Doc_Plugin();
+register_activation_hook( __FILE__, array( $wpc2gdoc_plugin, 'activate' ) );
+register_deactivation_hook( __FILE__, array( $wpc2gdoc_plugin, 'deactivate' ) );
 
-if ( class_exists( 'Wpc2GoogleDoc\Plugin' ) ) {
-	$the_plugin = new Plugin();
-	register_activation_hook( __FILE__, array( $the_plugin, 'activate' ) );
-	register_deactivation_hook( __FILE__, array( $the_plugin, 'deactivate' ) );
-}
+// Execute plugin main entry point.
+$wpc2gdoc_plugin->start();
