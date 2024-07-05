@@ -1,58 +1,69 @@
 {
-    "name": "coderbox/wpc2-google-doc",
-    "description": "W",
-    "license": "GPL-3.0+",
-    "version": "1.0.0",
-    "keywords": [
-        "wordpress",
-        "plugin"
-    ],
-    "require": {
-        "php": ">=7.4",
-        "google/apiclient": "^2.15.0"
-    },
-    "homepage": "https://github.com/coderboxnet/wpc2-google-doc/",
-    "type": "wordpress-plugin",
-    "authors": [
-        {
-            "name": "Javier Moran",
-            "email": "javiery2k@gmail.com"
-        },
-        {
-            "name": "CODERBOX",
-            "email": "dev@coderbox.net"
-        },
-        {
-            "name": "Osvaldo Galvez",
-            "email": "osvaldo.galvez@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Wpc2GoogleDoc\\": "app/"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "require-dev": {
-        "wp-coding-standards/wpcs": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "*",
-        "php-stubs/wordpress-stubs": "*",
-        "guzzlehttp/guzzle": "*"
-    },
-   "extra": {
-        "google/apiclient-services": [
-            "Drive",
-            "YouTube"
-        ]
-    },
-    "scripts": {
-        "build": [
-            "php scripts/build-plugin.php"
-        ],
-        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
-    }
+	"name": "coderbox/wpc2-google-doc",
+	"description": "W",
+	"license": "GPL-3.0+",
+	"version": "1.0.0",
+	"keywords": [
+		"wordpress",
+		"plugin"
+	],
+	"require": {
+		"php": ">=7.4",
+		"google/apiclient": "^2.15.0"
+	},
+	"homepage": "https://github.com/coderboxnet/wpc2-google-doc/",
+	"type": "wordpress-plugin",
+	"authors": [
+		{
+			"name": "Javier Moran",
+			"email": "javiery2k@gmail.com"
+		},
+		{
+			"name": "CODERBOX",
+			"email": "dev@coderbox.net"
+		},
+		{
+			"name": "Osvaldo Galvez",
+			"email": "osvaldogalvez20@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Wpc2GoogleDoc\\": "app/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"require-dev": {
+		"pheromone/phpcs-security-audit": "*",
+		"roave/security-advisories": "dev-latest",
+		"wp-coding-standards/wpcs": "*",
+		"dealerdirect/phpcodesniffer-composer-installer": "*",
+		"php-stubs/wordpress-stubs": "*",
+		"guzzlehttp/guzzle": "*"
+	},
+	"extra": {
+		"google/apiclient-services": [
+			"Drive"
+		]
+	},
+	"scripts": {
+		"phpcs-i": "@php vendor/bin/phpcs -i",
+		"check-cs": "@php vendor/bin/phpcs --parallel=8 --extensions=php --standard=phpcs.xml -s",
+		"build": [
+			"@php scripts/build-plugin.php"
+		],
+		"pre-autoload-dump": "Google\\Task\\Composer::cleanup",
+		"post-install-cmd": [
+			"bash vendor/pheromone/phpcs-security-audit/symlink.sh",
+			"@phpcs-i"
+		],
+		"post-update-cmd": [
+			"bash vendor/pheromone/phpcs-security-audit/symlink.sh",
+			"@phpcs-i"
+		]
+	}
 }
