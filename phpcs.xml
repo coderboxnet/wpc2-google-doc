@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards">
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset -->
+	<!-- See https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
+
+	<!-- Set a description for this ruleset. -->
+	<description>A custom set of code standard rules to check for WordPress themes.</description>
+	<file>.</file>
+
+	<!-- Exclude the Composer Vendor directory. -->
+	<exclude-pattern>./vendor/*</exclude-pattern>
+
+	<!-- Exclude the Node Modules directory. -->
+	<exclude-pattern>./node_modules/*</exclude-pattern>
+
+	<!-- Exclude final build directory. -->
+	<exclude-pattern>./build/*</exclude-pattern>
+
+	<!-- Just check php files -->
+	<arg name="extensions" value="php" />
+
+	<!-- Colors! Nice! -->
+	<arg name="colors" />
+
+	<!-- Full report -->
+	<arg name="report" value="full" />
+
+	<!-- Include the WordPress ruleset, with exclusions. -->
+	<rule ref="WordPress">
+		<!-- Just report errors -->
+		<type>error</type>
+	</rule>
+</ruleset>
