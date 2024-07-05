@@ -10,7 +10,31 @@ jQuery(document).ready(function($) {
                 post_id: postId
             },
             success: function(response) {
-                alert('Action completed: ' + response.data);
+                if(response.data.status) {
+                    console.log(response.data.authURL);
+                    window.open(response.data.authURL);
+                }
+                
+            },
+            error: function() {
+                alert('Error: Something went wrong.');
+            }
+        });
+    });
+    $('#connect_google').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: wpc2Ajax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'google_connect_action'
+            },
+            success: function(response) {
+                if(response.data.status) {
+                    console.log(response.data.authURL);
+                    window.open(response.data.authURL);
+                }
+                
             },
             error: function() {
                 alert('Error: Something went wrong.');
