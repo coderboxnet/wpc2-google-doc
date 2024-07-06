@@ -27,6 +27,7 @@ class WPC2_Google_Doc_Admin {
 	 */
 	public function __construct() {
 		$this->auth = new WPC2_Google_Doc_Auth();
+		$this->auth->setup_redirect_uri( self::ADMIN_MENU_SLUG );
 	}
 
 	/**
@@ -61,6 +62,7 @@ class WPC2_Google_Doc_Admin {
 				CONNECTED
 			<?php else : ?>
 				NOT CONNECTED
+				<?php echo esc_attr( $this->auth->get_auth_url() ); ?>
 			<?php endif; ?>
 		</div>
 		<?php
