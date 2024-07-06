@@ -16,6 +16,20 @@ class WPC2_Google_Doc_Admin {
 	const ADMIN_MENU_SLUG = 'cbox-wpc2-google-doc-settings';
 
 	/**
+	 * Auth instance.
+	 *
+	 * @var WPC2_Google_Doc_Auth
+	 */
+	private $auth;
+
+	/**
+	 * Class constructor.
+	 */
+	public function __construct() {
+		$this->auth = new WPC2_Google_Doc_Auth();
+	}
+
+	/**
 	 * Register all WP-Admin actions managed by this plugin.
 	 */
 	public function setup_admin_actions() {
@@ -39,9 +53,15 @@ class WPC2_Google_Doc_Admin {
 	 * Configure our admin settings page.
 	 */
 	public function settings_page() {
+
 		?>
 		<div class="wrap">
 			<h2><?php echo esc_html__( 'WPC2 Google Doc Settings', 'wpc2-google-doc' ); ?></h2>
+			<?php if ( $this->auth->is_connected() ) : ?>
+				CONNECTED
+			<?php else : ?>
+				NOT CONNECTED
+			<?php endif; ?>
 		</div>
 		<?php
 	}
