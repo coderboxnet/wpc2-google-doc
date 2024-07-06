@@ -12,9 +12,9 @@ namespace CODERBOX\Wpc2GoogleDoc;
  * WPC2_Google_Doc_Options class definition
  */
 class WPC2_Google_Doc_Options {
-	const OPTION_CONNECTION_STATUS  = 'cbox_wpc2gdoc_constat';
-	const OPTION_CLIENT_CREDENTIALS = 'cbox_wpc2gdoc_clicreds';
-	const TRANSIENT_CODE_VERIFIER   = 'cbox_wpc2gdoc_codever';
+	private const OPTION_CONNECTION_STATUS  = 'cbox_wpc2gdoc_constat';
+	private const OPTION_CLIENT_CREDENTIALS = 'cbox_wpc2gdoc_clicreds';
+	private const TRANSIENT_CODE_VERIFIER   = 'cbox_wpc2gdoc_codever';
 
 	/**
 	 * Get the stored values for the

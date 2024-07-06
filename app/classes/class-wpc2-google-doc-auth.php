@@ -67,10 +67,10 @@ class WPC2_Google_Doc_Auth {
 	/**
 	 * Set the Google client instance redirect uri.
 	 *
-	 * @param string $admin_menu_slug The slug of the admin settings page.
+	 * @param string $settings_page The slug of the admin settings page.
 	 */
-	public function setup_redirect_uri( $admin_menu_slug ) {
-		$uri = admin_url( "admin.php?page={$admin_menu_slug}" );
+	public function setup_redirect_uri( $settings_page ) {
+		$uri = admin_url( "admin.php?page={$settings_page}" );
 		$this->client->setRedirectUri( $uri );
 	}
 

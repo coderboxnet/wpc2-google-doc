@@ -13,7 +13,14 @@ namespace CODERBOX\Wpc2GoogleDoc;
  */
 class WPC2_Google_Doc_Admin {
 
-	const ADMIN_MENU_SLUG = 'cbox-wpc2-google-doc-settings';
+	const ADMIN_SETTINGS_PAGE = 'cbox-wpc2-google-doc-settings';
+
+	/**
+	 * WP Settigns
+	 *
+	 * @var WPC2_Google_Doc_Admin_Settings
+	 */
+	private $settings;
 
 	/**
 	 * Auth instance.
@@ -22,12 +29,19 @@ class WPC2_Google_Doc_Admin {
 	 */
 	private $auth;
 
+
+
 	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
+
+		// All related to settings fields.
+		$this->settings = new WPC2_Google_Doc_Admin_Settings( self::ADMIN_SETTINGS_PAGE );
+
+		// Google Auth Client.
 		$this->auth = new WPC2_Google_Doc_Auth();
-		$this->auth->setup_redirect_uri( self::ADMIN_MENU_SLUG );
+		$this->auth->setup_redirect_uri( self::ADMIN_SETTINGS_PAGE );
 	}
 
 	/**
@@ -35,6 +49,7 @@ class WPC2_Google_Doc_Admin {
 	 */
 	public function setup_admin_actions() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'register_plugin_options' ) );
 	}
 
 	/**
@@ -45,9 +60,18 @@ class WPC2_Google_Doc_Admin {
 			'WPC2 Google Doc Settings',
 			'WPC2 Google Doc',
 			'manage_options',
-			self::ADMIN_MENU_SLUG,
+			self::ADMIN_SETTINGS_PAGE,
 			array( $this, 'settings_page' )
 		);
+	}
+
+	/**
+	 * Register custom option fields and settings sections.
+	 */
+	public function register_plugin_options() {
+		$this->settings->setup_settings();
+		$this->settings->setup_sections();
+		$this->settings->setup_fields();
 	}
 
 	/**
@@ -55,16 +79,24 @@ class WPC2_Google_Doc_Admin {
 	 */
 	public function settings_page() {
 
-		?>
-		<div class="wrap">
-			<h2><?php echo esc_html__( 'WPC2 Google Doc Settings', 'wpc2-google-doc' ); ?></h2>
-			<?php if ( $this->auth->is_connected() ) : ?>
-				CONNECTED
-			<?php else : ?>
-				NOT CONNECTED
-				<?php echo esc_attr( $this->auth->get_auth_url() ); ?>
-			<?php endif; ?>
-		</div>
-		<?php
+		echo '<div class="wrap">';
+		printf( '<h1>%s</h1>', esc_html__( 'WPC2 Google Doc Settings', 'wpc2-google-doc' ) );
+		$this->render_connection_status();
+		$this->settings->render_sections();
+		echo '</div>';
+	}
+
+	/**
+	 * Display the current app connection status with a Google account.
+	 */
+	private function render_connection_status() {
+		echo '<div>';
+		printf( '<h2>%s</h2>', esc_html__( 'Connection Status', 'wpc2-google-doc' ) );
+		if ( $this->auth->is_connected() ) {
+			printf( '<strong>%s</strong>', esc_html__( 'CONNECTED', 'wpc2-google-doc' ) );
+		} else {
+			printf( '<strong>%s</strong>', esc_html__( 'NOT CONNECTED', 'wpc2-google-doc' ) );
+		}
+		echo '</div>';
 	}
 }
