@@ -34,7 +34,7 @@ class WPC2_Google_Doc_Auth {
 	 * Class constructor.
 	 */
 	public function __construct() {
-		$this->options = new WPC2_Google_Doc_Options();
+		$this->options = WPC2_Google_Doc_Options::get_instance();
 		$this->client  = new \Google\Client();
 		$this->setup_client_credentials();
 		$this->setup_scopes();
@@ -47,6 +47,9 @@ class WPC2_Google_Doc_Auth {
 		$credentials = $this->options->get_client_credentials();
 		$this->client->setClientId( $credentials['client_id'] );
 		$this->client->setClientSecret( $credentials['client_secret'] );
+
+		$token = $this->options->get_access_token();
+		$this->client->setAccessToken( $token );
 	}
 
 	/**
@@ -59,7 +62,7 @@ class WPC2_Google_Doc_Auth {
 	/**
 	 * Generate the code verifier used in the auth process.
 	 */
-	private function setup_code_verifier() {
+	public function setup_code_verifier() {
 		$code_verifier = $this->client->getOAuth2Service()->generateCodeVerifier();
 		$this->options->save_auth_code_verifier( $code_verifier );
 	}
@@ -70,7 +73,7 @@ class WPC2_Google_Doc_Auth {
 	 * @param string $settings_page The slug of the admin settings page.
 	 */
 	public function setup_redirect_uri( $settings_page ) {
-		$uri = admin_url( "admin.php?page={$settings_page}" );
+		$uri = \admin_url( "admin.php?page={$settings_page}" );
 		$this->client->setRedirectUri( $uri );
 	}
 
@@ -85,11 +88,76 @@ class WPC2_Google_Doc_Auth {
 	}
 
 	/**
+	 * Retrieve the generated redirect URI.
+	 *
+	 * @return string
+	 */
+	public function get_redirect_uri() {
+		return $this->client->getRedirectUri();
+	}
+
+	/**
 	 * Check if the plugin is already connected with a Google account.
 	 *
 	 * @return bool
 	 */
 	public function is_connected() {
-		return $this->options->get_connection_status() === self::STATUS_CONNECTED;
+		return self::STATUS_CONNECTED === $this->options->get_connection_status();
+	}
+
+	/**
+	 * Check if the corrent configured token is still valid.
+	 *
+	 * @return bool
+	 */
+	public function is_token_valid() {
+		if ( $this->client->isAccessTokenExpired() ) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Reset any stored values as they expired.
+	 */
+	public function disconnect() {
+		$this->client->setAccessToken( '' );
+		$this->options->update_connection_status( self::STATUS_DISCONNECTED );
+		$this->options->update_access_token( '' );
+	}
+
+	/**
+	 * Generate and save the access token from an existing auth flow.
+	 */
+	public function check_oauth_flow() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['code'] ) ) {
+			try {
+				$code     = \sanitize_text_field( \wp_unslash( $_GET['code'] ) );
+				$verifier = $this->options->get_auth_code_verifier();
+				if ( ! empty( $verifier ) ) {
+					$token = $this->client->fetchAccessTokenWithAuthCode( $code, $verifier );
+
+					// Set client access token.
+					$this->client->setAccessToken( $token );
+
+					// store in the token.
+					$this->options->update_access_token( $token );
+
+					// update the connection status to connected.
+					$this->options->update_connection_status( self::STATUS_CONNECTED );
+				}
+
+				// redirect back to our settings page.
+				$final_url = $this->get_redirect_uri();
+				\wp_safe_redirect( $final_url );
+			} catch ( \Throwable $th ) {
+				// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( $th->getMessage() );
+				error_log( $th->getTraceAsString() );
+				// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	}
 }

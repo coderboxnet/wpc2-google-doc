@@ -13,10 +13,16 @@ namespace CODERBOX\Wpc2GoogleDoc;
  */
 class WPC2_Google_Doc_Admin_Settings {
 
-	private const SETTINGS_OPTIONS_GROUP = 'cbox_wpc2gdoc_options';
-	private const APP_CONNECTION_SECTION = 'cbox_wpc2gdoc_account_connection';
-	private const FIELD_CLIENT_ID        = 'cbox_wpc2gdoc_field_client_id';
-	private const FIELD_CLIENT_SECRET    = 'cbox_wpc2gdoc_field_client_secret';
+	private const SETTINGS_MESSAGES    = 'cbox_wpc2gdoc_messages';
+	private const MESSAGE_CODE         = 'cbox_wpc2gdoc_message_code';
+	private const APP_SETTINGS_SECTION = 'cbox_wpc2gdoc_app_settings';
+
+	/**
+	 * Plugin options instance.
+	 *
+	 * @var WPC2_Google_Doc_Options
+	 */
+	private $options;
 
 	/**
 	 * WP-Admin Settings Page Slug
@@ -31,6 +37,11 @@ class WPC2_Google_Doc_Admin_Settings {
 	 * @param string $settings_page Admin Settings Page Slug.
 	 */
 	public function __construct( $settings_page ) {
+
+		// Manage the WP Options API.
+		$this->options = WPC2_Google_Doc_Options::get_instance();
+
+		// Our settings page slug.
 		$this->settings_page = $settings_page;
 	}
 
@@ -38,7 +49,10 @@ class WPC2_Google_Doc_Admin_Settings {
 	 * Register the plugin settings to be used in WP-Admin.
 	 */
 	public function setup_settings() {
-		register_setting( $this->settings_page, self::SETTINGS_OPTIONS_GROUP );
+		register_setting(
+			WPC2_Google_Doc_Options::OPTION_GROUP,
+			WPC2_Google_Doc_Options::OPTION_NAME
+		);
 	}
 
 	/**
@@ -60,20 +74,20 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function register_section_app_connection() {
 		add_settings_section(
-			self::APP_CONNECTION_SECTION,
+			self::APP_SETTINGS_SECTION,
 			__( 'App Connection Settings', 'wpc2-google-doc' ),
-			array( $this, 'cb_section_app_connection' ),
+			array( $this, 'cb_section_app_settings' ),
 			$this->settings_page
 		);
 	}
 
 	/**
-	 * App Connection Section Callback
+	 * App Settings Section Callback
 	 * Used to display content before the form fields.
 	 *
 	 * @param array $args The settings array, defining title, id, callback.
 	 */
-	public function cb_section_app_connection( $args ) {}
+	public function cb_section_app_settings( $args ) {}
 
 	/**
 	 * Register client id and secret fields.
@@ -81,20 +95,20 @@ class WPC2_Google_Doc_Admin_Settings {
 	public function register_fields_app_connection() {
 		// Client ID field.
 		add_settings_field(
-			self::FIELD_CLIENT_ID,
+			WPC2_Google_Doc_Options::CLIENT_ID,
 			__( 'Client ID', 'wpc2-google-doc' ),
 			array( $this, 'cb_field_client_id' ),
 			$this->settings_page,
-			self::APP_CONNECTION_SECTION,
+			self::APP_SETTINGS_SECTION,
 		);
 
 		// Client Secret field.
 		add_settings_field(
-			self::FIELD_CLIENT_SECRET,
+			WPC2_Google_Doc_Options::CLIENT_SECRET,
 			__( 'Client Secret', 'wpc2-google-doc' ),
 			array( $this, 'cb_field_client_secret' ),
 			$this->settings_page,
-			self::APP_CONNECTION_SECTION,
+			self::APP_SETTINGS_SECTION,
 		);
 	}
 
@@ -103,9 +117,11 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function cb_field_client_id() {
 		printf(
-			'<input type="text" id="%s" name="%s" />',
-			esc_attr( self::FIELD_CLIENT_ID ),
-			esc_attr( self::FIELD_CLIENT_ID )
+			'<input type="text" id="%s" name="%s[%s]" value="%s" />',
+			esc_attr( WPC2_Google_Doc_Options::CLIENT_ID ),
+			esc_attr( WPC2_Google_Doc_Options::OPTION_NAME ),
+			esc_attr( WPC2_Google_Doc_Options::CLIENT_ID ),
+			esc_attr( $this->options->get_client_id() )
 		);
 	}
 
@@ -114,9 +130,11 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function cb_field_client_secret() {
 		printf(
-			'<input type="password" id="%s" name="%s" />',
-			esc_attr( self::FIELD_CLIENT_SECRET ),
-			esc_attr( self::FIELD_CLIENT_SECRET )
+			'<input type="password" id="%s" name="%s[%s]" value="%s" />',
+			esc_attr( WPC2_Google_Doc_Options::CLIENT_SECRET ),
+			esc_attr( WPC2_Google_Doc_Options::OPTION_NAME ),
+			esc_attr( WPC2_Google_Doc_Options::CLIENT_SECRET ),
+			esc_attr( $this->options->get_client_secret() )
 		);
 	}
 
@@ -125,9 +143,23 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function render_sections() {
 		echo '<form action="options.php" method="post">';
-		settings_fields( $this->settings_page );
+		settings_fields( WPC2_Google_Doc_Options::OPTION_GROUP );
 		do_settings_sections( $this->settings_page );
 		submit_button( 'Save Settings' );
 		echo '</form>';
+	}
+
+	/**
+	 * Show error/update messages.
+	 */
+	public function render_messages() {
+		// check if the user have submitted the settings
+		// WordPress will add the "settings-updated" $_GET parameter to the url.
+		if ( isset( $_GET['settings-updated'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// add settings saved message with the class of "updated".
+			add_settings_error( self::SETTINGS_MESSAGES, self::MESSAGE_CODE, __( 'Settings Saved', 'wpc2-google-doc' ), 'updated' );
+		}
+		// display messages.
+		settings_errors( self::SETTINGS_MESSAGES );
 	}
 }
