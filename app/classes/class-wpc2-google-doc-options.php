@@ -165,4 +165,13 @@ class WPC2_Google_Doc_Options {
 	public function get_access_token() {
 		return \get_option( self::OPTION_ACCESS_TOKEN, '' );
 	}
+
+	/**
+	 * Get the selected post types to do the backup
+	 *
+	 * @return array
+	 */
+	public function get_allowed_post_types() {
+		return array();
+	}
 }

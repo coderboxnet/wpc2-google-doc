@@ -29,7 +29,8 @@
 	],
 	"autoload": {
 		"classmap": [
-			"app/classes/"
+			"app/classes/",
+			"app/virtuals/"
 		]
 	},
 	"config": {

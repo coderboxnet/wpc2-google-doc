@@ -8,8 +8,6 @@
 // Define plugin namespace.
 namespace CODERBOX\Wpc2GoogleDoc;
 
-use CODERBOX\Wpc2GoogleDoc\WPC2_Google_Doc_Admin;
-
 /**
  * WPC2_Google_Doc_Plugin class definition
  */

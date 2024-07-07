@@ -41,7 +41,7 @@ class WPC2_Google_Doc_Admin {
 		$this->settings = new WPC2_Google_Doc_Admin_Settings( self::ADMIN_SETTINGS_PAGE );
 
 		// Google Auth Client.
-		$this->auth = new WPC2_Google_Doc_Auth();
+		$this->auth = WPC2_Google_Doc_Auth::get_instance();
 		$this->auth->setup_redirect_uri( self::ADMIN_SETTINGS_PAGE );
 		$this->auth->check_oauth_flow();
 	}

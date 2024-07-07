@@ -26,18 +26,39 @@ class WPC2_Google_Doc_Auth {
 	/**
 	 * Google client instance.
 	 *
-	 * @var Google\Client
+	 * @var \Google\Client
 	 */
 	private $client;
 
 	/**
+	 * Singleton class instance.
+	 *
+	 * @var WPC2_Google_Doc_Auth
+	 */
+	private static $instance = null;
+
+	/**
 	 * Class constructor.
 	 */
-	public function __construct() {
+	protected function __construct() {
 		$this->options = WPC2_Google_Doc_Options::get_instance();
 		$this->client  = new \Google\Client();
 		$this->setup_client_credentials();
 		$this->setup_scopes();
+	}
+
+	/**
+	 * Get self instance.
+	 *
+	 * @return WPC2_Google_Doc_Auth
+	 */
+	public static function get_instance() {
+
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new static();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -159,5 +180,14 @@ class WPC2_Google_Doc_Auth {
 			}
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	}
+
+	/**
+	 * Retrive the Google Client
+	 *
+	 * @return \Google\Client
+	 */
+	public function get_google_client() {
+		return $this->client;
 	}
 }
