@@ -2,6 +2,30 @@
 
 ## Recommended local development
 
+### Requierements
+
+- PHP v7.4 or higher
+- Composer
+- Google account to test
+- A WordPress instance to test
+
+### Install
+
+```bash
+$ git clone git@github.com:coderboxnet/wpc2-google-doc.git
+$ composer install
+```
+
+### Scripts
+
+```bash
+# When adding new classes, you need to update the autoload configuration
+$ composer dump-autoload
+
+# Check coding standards
+$ composer run-script check-cs
+```
+
 ### VS Code
 
 #### Extensions

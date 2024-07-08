@@ -13,6 +13,7 @@
  * Author URI:        https://github.com/coderboxnet/wpc2-google-doc
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       wpc2-google-doc
  *
  * @package wpc2-google-doc
  */
@@ -21,9 +22,11 @@
 require_once 'vendor/autoload.php';
 
 // Init our plugin.
-$wpc2gdoc_plugin = new \CODERBOX\Wpc2GoogleDoc\WPC2_Google_Doc_Plugin();
+$wpc2gdoc_plugin = new \CODERBOX\Wpc2GoogleDoc\WPC2_GDoc_Plugin();
 register_activation_hook( __FILE__, array( $wpc2gdoc_plugin, 'activate' ) );
 register_deactivation_hook( __FILE__, array( $wpc2gdoc_plugin, 'deactivate' ) );
 
+
+
 // Execute plugin main entry point.
-$wpc2gdoc_plugin->start();
+add_action( 'init', array( $wpc2gdoc_plugin, 'start' ), 40 );
