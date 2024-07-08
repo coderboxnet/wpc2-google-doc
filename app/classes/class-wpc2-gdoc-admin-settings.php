@@ -9,9 +9,9 @@
 namespace CODERBOX\Wpc2GoogleDoc;
 
 /**
- * WPC2_Google_Doc_Admin_Settings class definition
+ * WPC2_GDoc_Admin_Settings class definition
  */
-class WPC2_Google_Doc_Admin_Settings {
+class WPC2_GDoc_Admin_Settings {
 
 	private const SETTINGS_MESSAGES    = 'cbox_wpc2gdoc_messages';
 	private const MESSAGE_CODE         = 'cbox_wpc2gdoc_message_code';
@@ -20,7 +20,7 @@ class WPC2_Google_Doc_Admin_Settings {
 	/**
 	 * Plugin options instance.
 	 *
-	 * @var WPC2_Google_Doc_Options
+	 * @var WPC2_GDoc_Options
 	 */
 	private $options;
 
@@ -39,7 +39,7 @@ class WPC2_Google_Doc_Admin_Settings {
 	public function __construct( $settings_page ) {
 
 		// Manage the WP Options API.
-		$this->options = WPC2_Google_Doc_Options::get_instance();
+		$this->options = WPC2_GDoc_Options::get_instance();
 
 		// Our settings page slug.
 		$this->settings_page = $settings_page;
@@ -50,8 +50,8 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function setup_settings() {
 		register_setting(
-			WPC2_Google_Doc_Options::OPTION_GROUP,
-			WPC2_Google_Doc_Options::OPTION_NAME
+			WPC2_GDoc_Options::OPTION_GROUP,
+			WPC2_GDoc_Options::OPTION_NAME
 		);
 	}
 
@@ -95,7 +95,7 @@ class WPC2_Google_Doc_Admin_Settings {
 	public function register_fields_app_connection() {
 		// Client ID field.
 		add_settings_field(
-			WPC2_Google_Doc_Options::CLIENT_ID,
+			WPC2_GDoc_Options::CLIENT_ID,
 			__( 'Client ID', 'wpc2-google-doc' ),
 			array( $this, 'cb_field_client_id' ),
 			$this->settings_page,
@@ -104,7 +104,7 @@ class WPC2_Google_Doc_Admin_Settings {
 
 		// Client Secret field.
 		add_settings_field(
-			WPC2_Google_Doc_Options::CLIENT_SECRET,
+			WPC2_GDoc_Options::CLIENT_SECRET,
 			__( 'Client Secret', 'wpc2-google-doc' ),
 			array( $this, 'cb_field_client_secret' ),
 			$this->settings_page,
@@ -118,9 +118,9 @@ class WPC2_Google_Doc_Admin_Settings {
 	public function cb_field_client_id() {
 		printf(
 			'<input type="text" id="%s" name="%s[%s]" value="%s" />',
-			esc_attr( WPC2_Google_Doc_Options::CLIENT_ID ),
-			esc_attr( WPC2_Google_Doc_Options::OPTION_NAME ),
-			esc_attr( WPC2_Google_Doc_Options::CLIENT_ID ),
+			esc_attr( WPC2_GDoc_Options::CLIENT_ID ),
+			esc_attr( WPC2_GDoc_Options::OPTION_NAME ),
+			esc_attr( WPC2_GDoc_Options::CLIENT_ID ),
 			esc_attr( $this->options->get_client_id() )
 		);
 	}
@@ -131,9 +131,9 @@ class WPC2_Google_Doc_Admin_Settings {
 	public function cb_field_client_secret() {
 		printf(
 			'<input type="password" id="%s" name="%s[%s]" value="%s" />',
-			esc_attr( WPC2_Google_Doc_Options::CLIENT_SECRET ),
-			esc_attr( WPC2_Google_Doc_Options::OPTION_NAME ),
-			esc_attr( WPC2_Google_Doc_Options::CLIENT_SECRET ),
+			esc_attr( WPC2_GDoc_Options::CLIENT_SECRET ),
+			esc_attr( WPC2_GDoc_Options::OPTION_NAME ),
+			esc_attr( WPC2_GDoc_Options::CLIENT_SECRET ),
 			esc_attr( $this->options->get_client_secret() )
 		);
 	}
@@ -143,7 +143,7 @@ class WPC2_Google_Doc_Admin_Settings {
 	 */
 	public function render_sections() {
 		echo '<form action="options.php" method="post">';
-		settings_fields( WPC2_Google_Doc_Options::OPTION_GROUP );
+		settings_fields( WPC2_GDoc_Options::OPTION_GROUP );
 		do_settings_sections( $this->settings_page );
 		submit_button( 'Save Settings' );
 		echo '</form>';

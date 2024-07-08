@@ -1,0 +1,103 @@
+<?php
+/**
+ * Google backup functionalities
+ *
+ * @package wpc2-google-doc
+ */
+
+// Define plugin namespace.
+namespace CODERBOX\Wpc2GoogleDoc;
+
+/**
+ * WPC2_GDoc_GDrive_Backup class definition
+ */
+class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
+
+	private const BACKUP_POST_META_KEY = '_wpc2gd_gdrive_backup_status';
+
+	/**
+	 * Singleton class instance.
+	 *
+	 * @var WPC2_GDoc_GDrive_Backup
+	 */
+	private static $instance = null;
+
+	/**
+	 * Class constructor
+	 */
+	protected function __construct() {}
+
+	/**
+	 * Get self instance.
+	 *
+	 * @return WPC2_GDoc_GDrive_Backup
+	 */
+	public static function get_instance() {
+
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new static();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Save the blog post content in a remote file in Google Drive.
+	 *
+	 * @param string $file_name The backup file name.
+	 * @param string $file_content The backup file content.
+	 */
+	public function create_backup( $file_name, $file_content ) {
+		try {
+			// Google Auth Client.
+			$auth = WPC2_GDoc_Auth::get_instance();
+
+			// Google Drive Service.
+			$drive = new \Google\Service\Drive( $auth->get_google_client() );
+
+			// Google Document.
+			$file = new \Google\Service\Drive\DriveFile();
+			$file->setName( $file_name );
+			$result = $drive->files->create(
+				$file,
+				array(
+					'data'     => $file_content,
+					'mimeType' => 'text/plain',
+				)
+			);
+			return true;
+		} catch ( \Throwable $th ) {
+			var_dump( $th );
+			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( $th->getMessage() );
+			error_log( $th->getTraceAsString() );
+			// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+	}
+
+	/**
+	 * Get the backup status meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $default_value A default value if no status if found.
+	 * @return string
+	 */
+	public function get_backup_status( $post_id, $default_value ) {
+		$status = get_post_meta( $post_id, self::BACKUP_POST_META_KEY, true );
+
+		if ( false === $status ) {
+			return 'UNKNOWN';
+		}
+		return empty( $status ) ? $default_value : $status;
+	}
+
+	/**
+	 * Update the backup status meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $status The backup status.
+	 */
+	public function update_backup_status( $post_id, $status ) {
+		update_post_meta( $post_id, self::BACKUP_POST_META_KEY, $status );
+	}
+}

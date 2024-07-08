@@ -9,9 +9,9 @@
 namespace CODERBOX\Wpc2GoogleDoc;
 
 /**
- * WPC2_Google_Doc_Auth class definition
+ * WPC2_GDoc_Auth class definition
  */
-class WPC2_Google_Doc_Auth {
+class WPC2_GDoc_Auth {
 
 	const STATUS_CONNECTED    = 'CONNECTED';
 	const STATUS_DISCONNECTED = 'DISCONNECTED';
@@ -19,7 +19,7 @@ class WPC2_Google_Doc_Auth {
 	/**
 	 * Plugin options instance.
 	 *
-	 * @var WPC2_Google_Doc_Options
+	 * @var WPC2_GDoc_Options
 	 */
 	private $options;
 
@@ -33,7 +33,7 @@ class WPC2_Google_Doc_Auth {
 	/**
 	 * Singleton class instance.
 	 *
-	 * @var WPC2_Google_Doc_Auth
+	 * @var WPC2_GDoc_Auth
 	 */
 	private static $instance = null;
 
@@ -41,7 +41,7 @@ class WPC2_Google_Doc_Auth {
 	 * Class constructor.
 	 */
 	protected function __construct() {
-		$this->options = WPC2_Google_Doc_Options::get_instance();
+		$this->options = WPC2_GDoc_Options::get_instance();
 		$this->client  = new \Google\Client();
 		$this->setup_client_credentials();
 		$this->setup_scopes();

@@ -9,9 +9,9 @@
 namespace CODERBOX\Wpc2GoogleDoc;
 
 /**
- * WPC2_Google_Doc_Options class definition
+ * WPC2_GDoc_Options class definition
  */
-class WPC2_Google_Doc_Options {
+class WPC2_GDoc_Options {
 	private const OPTION_ACCESS_TOKEN      = 'cbox_wpc2gdoc_token';
 	private const OPTION_CONNECTION_STATUS = 'cbox_wpc2gdoc_constat';
 	private const TRANSIENT_CODE_VERIFIER  = 'cbox_wpc2gdoc_codever';
@@ -172,6 +172,6 @@ class WPC2_Google_Doc_Options {
 	 * @return array
 	 */
 	public function get_allowed_post_types() {
-		return array();
+		return array( 'post' );
 	}
 }

@@ -9,49 +9,80 @@
 namespace CODERBOX\Wpc2GoogleDoc;
 
 /**
- * WPC2_Google_Doc_Admin class definition
+ * WPC2_GDoc_Admin class definition
  */
-class WPC2_Google_Doc_Admin {
+class WPC2_GDoc_Admin {
 
 	const ADMIN_SETTINGS_PAGE = 'cbox-wpc2-google-doc-settings';
-	const SETTINGS_MESSAGES   = 'wporg_messages';
+
+	/**
+	 * Admin Backup instance
+	 *
+	 * @var WPC2_GDoc_Admin_Backup
+	 */
+	private $admin_backup;
 
 	/**
 	 * WP Settigns
 	 *
-	 * @var WPC2_Google_Doc_Admin_Settings
+	 * @var WPC2_GDoc_Admin_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Auth instance.
 	 *
-	 * @var WPC2_Google_Doc_Auth
+	 * @var WPC2_GDoc_Auth
 	 */
 	private $auth;
 
+	/**
+	 * Singleton class instance.
+	 *
+	 * @var WPC2_GDoc_Admin
+	 */
+	private static $instance = null;
 
 
 	/**
 	 * Class constructor.
 	 */
-	public function __construct() {
+	protected function __construct() {
 
 		// All related to settings fields.
-		$this->settings = new WPC2_Google_Doc_Admin_Settings( self::ADMIN_SETTINGS_PAGE );
+		$this->settings = new WPC2_GDoc_Admin_Settings( self::ADMIN_SETTINGS_PAGE );
+
+		// All related backup admin info.
+		$this->admin_backup = WPC2_GDoc_Admin_Backup::get_instance();
 
 		// Google Auth Client.
-		$this->auth = WPC2_Google_Doc_Auth::get_instance();
+		$this->auth = WPC2_GDoc_Auth::get_instance();
 		$this->auth->setup_redirect_uri( self::ADMIN_SETTINGS_PAGE );
 		$this->auth->check_oauth_flow();
 	}
 
 	/**
+	 * Get self instance.
+	 *
+	 * @return WPC2_GDoc_Admin
+	 */
+	public static function get_instance() {
+
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new static();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Register all WP-Admin actions managed by this plugin.
 	 */
-	public function setup_admin_actions() {
+	public function setup_actions() {
 		\add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		\add_action( 'admin_init', array( $this, 'register_plugin_options' ) );
+		$this->admin_backup->setup_actions();
+		$this->admin_backup->setup_filters();
 	}
 
 	/**
