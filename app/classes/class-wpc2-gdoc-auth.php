@@ -68,6 +68,7 @@ class WPC2_GDoc_Auth {
 		$credentials = $this->options->get_client_credentials();
 		$this->client->setClientId( $credentials['client_id'] );
 		$this->client->setClientSecret( $credentials['client_secret'] );
+		$this->client->setAccessType( 'offline' );
 
 		$token = $this->options->get_access_token();
 		$this->client->setAccessToken( $token );
