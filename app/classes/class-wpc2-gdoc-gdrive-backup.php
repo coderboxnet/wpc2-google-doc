@@ -48,9 +48,20 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 	 * @param string $file_content The backup file content.
 	 */
 	public function create_backup( $file_name, $file_content ) {
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		try {
 			// Google Auth Client.
 			$auth = WPC2_GDoc_Auth::get_instance();
+
+			if ( ! $auth->is_connected() ) {
+				error_log( 'WPC2_GDoc_GDrive_Backup::create_backup() -> Skip GDrive Backup, account not connected' );
+				return false;
+			}
+
+			if ( ! $auth->is_token_valid() ) {
+				error_log( 'WPC2_GDoc_GDrive_Backup::create_backup() -> Skip GDrive Backup, token expired' );
+				return false;
+			}
 
 			// Google Drive Service.
 			$drive = new \Google\Service\Drive( $auth->get_google_client() );
@@ -67,11 +78,10 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 			);
 			return true;
 		} catch ( \Throwable $th ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( $th->getMessage() );
 			error_log( $th->getTraceAsString() );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
+		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	}
 
 	/**
