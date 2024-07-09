@@ -65,7 +65,7 @@ class WPC2_GDoc_Backup_Manager {
 	 * Register all WP actions managed by this provider.
 	 */
 	public function setup_actions() {
-		\add_action( 'save_post', array( $this, 'backup_post' ), 2, 40 );
+		\add_action( 'save_post', array( $this, 'backup_post' ), 40, 2 );
 	}
 
 	/**

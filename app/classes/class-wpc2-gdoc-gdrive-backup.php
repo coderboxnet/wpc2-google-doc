@@ -67,7 +67,6 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 			);
 			return true;
 		} catch ( \Throwable $th ) {
-			var_dump( $th );
 			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( $th->getMessage() );
 			error_log( $th->getTraceAsString() );
