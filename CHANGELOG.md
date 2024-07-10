@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.1 - current
+## v1.0.1 - 2024-07-10
 
 - **Added:** Method `user_can_see_backup_column` to check if the current logged user can see the backup column
 - **Added:** New filter `cbox_wpc2_gdoc_backup_file_name` to manipulate the backup file name before get saved
