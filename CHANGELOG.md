@@ -1,5 +1,7 @@
 # Changelog
 
+## v1.0.2 - current
+
 ## v1.0.1 - 2024-07-10
 
 - **Added:** Method `user_can_see_backup_column` to check if the current logged user can see the backup column
