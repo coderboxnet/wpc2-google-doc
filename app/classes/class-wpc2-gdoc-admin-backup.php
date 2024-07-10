@@ -89,7 +89,7 @@ class WPC2_GDoc_Admin_Backup {
 	 * @param int    $post_id Post ID.
 	 */
 	public function backup_status_column_content( $column_name, $post_id ) {
-		if ( self::BACKUP_CUSTOM_COLUMN_KEY === $column_name ) {
+		if ( self::BACKUP_CUSTOM_COLUMN_KEY === $column_name && $this->user_can_see_backup_column() ) {
 			// Get all the backup status .
 			$backup_status = $this->bm->get_all_backup_status( $post_id );
 
@@ -111,7 +111,9 @@ class WPC2_GDoc_Admin_Backup {
 	 * @return array Columns with custom column added.
 	 */
 	public function add_backup_status_column( $columns ) {
-		$columns[ self::BACKUP_CUSTOM_COLUMN_KEY ] = __( 'Backup', 'wpc2-google-doc' );
+		if ( $this->user_can_see_backup_column() ) {
+			$columns[ self::BACKUP_CUSTOM_COLUMN_KEY ] = __( 'Backup', 'wpc2-google-doc' );
+		}
 		return $columns;
 	}
 
@@ -151,5 +153,20 @@ class WPC2_GDoc_Admin_Backup {
 			// any other post type.
 			return "manage_{$post_type}_posts_custom_column";
 		}
+	}
+
+	/**
+	 * Validates if the current logged user can see the backup column.
+	 *
+	 * @return bool
+	 */
+	private function user_can_see_backup_column() {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+		return true;
 	}
 }

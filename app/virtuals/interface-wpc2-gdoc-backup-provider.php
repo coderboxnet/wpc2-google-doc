@@ -21,10 +21,9 @@ interface WPC2_GDoc_Backup_Provider {
 	/**
 	 * Method that implements the backup process.
 	 *
-	 * @param string $file_name The backup file name.
-	 * @param string $file_content The backup file content.
+	 * @param array $args Array with the file_name, file_content and file_type keys.
 	 */
-	public function create_backup( $file_name, $file_content );
+	public function create_backup( $args );
 
 	/**
 	 * Get the backup status of a given post.

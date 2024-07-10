@@ -2,7 +2,11 @@
 
 ## v1.0.1 - current
 
-- **Added:** New filter `cbox_wpc2_gdoc_backup_content` to manipulate the backup content before get saved
+- **Added:** Method `user_can_see_backup_column` to check if the current logged user can see the backup column
+- **Added:** New filter `cbox_wpc2_gdoc_backup_file_name` to manipulate the backup file name before get saved
+- **Added:** New filter `cbox_wpc2_gdoc_backup_file_content` to manipulate the backup content before get saved
+- **Added:** New filter `cbox_wpc2_gdoc_backup_file_type` to manipulate the backup file mime type
+- **Updated:** Method `create_backup` now accepts an array of arguments
 
 ## v1.0.0 - 2024-07-09
 
