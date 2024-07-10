@@ -157,6 +157,12 @@ class WPC2_GDoc_Backup_Manager {
 		$content .= "Date: {$post->post_date}\n";
 		$content .= "\n{$post->post_content}\n";
 
+		// Apply any filters to our content before returning.
+		// Example:
+		// add_filter('cbox_wpc2_gdoc_backup_content', 'cb_func', 10, 2 );
+		// function cb_func($content, $post) { return $content; }
+		// This usually goes in the theme functions.php file.
+		$content = apply_filters( 'cbox_wpc2_gdoc_backup_content', $content, $post );
 		return $content;
 	}
 }
