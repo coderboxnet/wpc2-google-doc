@@ -44,10 +44,9 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 	/**
 	 * Save the blog post content in a remote file in Google Drive.
 	 *
-	 * @param string $file_name The backup file name.
-	 * @param string $file_content The backup file content.
+	 * @param array $args Array with the file_name, file_content and file_type keys.
 	 */
-	public function create_backup( $file_name, $file_content ) {
+	public function create_backup( $args ) {
 		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		try {
 			// Google Auth Client.
@@ -68,16 +67,17 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 
 			// Google Document.
 			$file = new \Google\Service\Drive\DriveFile();
-			$file->setName( $file_name );
+			$file->setName( $args['file_name'] );
 			$result = $drive->files->create(
 				$file,
 				array(
-					'data'     => $file_content,
-					'mimeType' => 'text/plain',
+					'data'     => $args['file_content'],
+					'mimeType' => $args['file_type'],
 				)
 			);
 			return true;
 		} catch ( \Throwable $th ) {
+			error_log( 'WPC2_GDoc_GDrive_Backup::create_backup() -> Caught exception' );
 			error_log( $th->getMessage() );
 			error_log( $th->getTraceAsString() );
 		}

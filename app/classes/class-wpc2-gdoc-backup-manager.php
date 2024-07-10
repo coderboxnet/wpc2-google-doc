@@ -102,10 +102,13 @@ class WPC2_GDoc_Backup_Manager {
 	 * @param WP_Post $post the WP post object.
 	 */
 	public function run_backups( $post ) {
-		$file_name    = $this->generate_backup_file_name( $post );
-		$file_content = $this->generate_backup_file_content( $post );
+		$args = array(
+			'file_name'    => $this->generate_backup_file_name( $post ),
+			'file_content' => $this->generate_backup_file_content( $post ),
+			'file_type'    => apply_filters( 'cbox_wpc2_gdoc_backup_file_type', 'text/plain' ),
+		);
 		foreach ( $this->providers as $provider ) {
-			$created = $provider->create_backup( $file_name, $file_content );
+			$created = $provider->create_backup( $args );
 			if ( $created ) {
 				$provider->update_backup_status( $post->ID, self::BACKUP_STATUS_SUCCESS );
 			} else {
@@ -138,7 +141,12 @@ class WPC2_GDoc_Backup_Manager {
 	 * @return string
 	 */
 	private function generate_backup_file_name( $post ) {
-		return "backup-{$post->post_type}-{$post->ID}.txt";
+		// Apply any filters to our file name before returning.
+		// Example:
+		// add_filter('cbox_wpc2_gdoc_backup_file_name', 'cb_func', 10, 2 );
+		// function cb_func($file_name, $post) { return $file_name; }
+		// This usually goes in the theme functions.php file.
+		return apply_filters( 'cbox_wpc2_gdoc_backup_file_name', "backup-{$post->post_type}-{$post->ID}.txt", $post );
 	}
 
 	/**
@@ -157,6 +165,12 @@ class WPC2_GDoc_Backup_Manager {
 		$content .= "Date: {$post->post_date}\n";
 		$content .= "\n{$post->post_content}\n";
 
+		// Apply any filters to our content before returning.
+		// Example:
+		// add_filter('cbox_wpc2_gdoc_backup_file_content', 'cb_func', 10, 2 );
+		// function cb_func($content, $post) { return $content; }
+		// This usually goes in the theme functions.php file.
+		$content = apply_filters( 'cbox_wpc2_gdoc_backup_file_content', $content, $post );
 		return $content;
 	}
 }
