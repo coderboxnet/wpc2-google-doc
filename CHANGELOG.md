@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.3 - 2024-07-11
+
+- **Added:** Cron job to refresh auth token
+- **Added:** Cron job to execute backup daily
+
 ## v1.0.2 - 2024-07-11
 
 - **Updated:** Method `create_backup` Post id is now part of the arguments array.
