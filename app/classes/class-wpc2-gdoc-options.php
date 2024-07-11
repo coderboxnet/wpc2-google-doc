@@ -172,6 +172,6 @@ class WPC2_GDoc_Options {
 	 * @return array
 	 */
 	public function get_allowed_post_types() {
-		return array( 'submission' );
+		return apply_filters( 'cbox_wpc2_gdoc_backup_post_types', array() );
 	}
 }
