@@ -1,5 +1,7 @@
 # Changelog
 
+## v1.0.3 - current
+
 ## v1.0.2 - 2024-07-11
 
 - **Updated:** Method `create_backup` Post id is now part of the arguments array.

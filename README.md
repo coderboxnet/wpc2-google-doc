@@ -1,4 +1,4 @@
-# wpc2-google-doc v1.0.2
+# wpc2-google-doc v1.0.3
 
 A WordPress plugin to backup posts as Google Docs
 
