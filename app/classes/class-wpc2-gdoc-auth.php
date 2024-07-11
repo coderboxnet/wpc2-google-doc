@@ -161,13 +161,7 @@ class WPC2_GDoc_Auth {
 					$token = $this->client->fetchAccessTokenWithAuthCode( $code, $verifier );
 
 					// Set client access token.
-					$this->client->setAccessToken( $token );
-
-					// store in the token.
-					$this->options->update_access_token( $token );
-
-					// update the connection status to connected.
-					$this->options->update_connection_status( self::STATUS_CONNECTED );
+					$this->update_auth_token( $token );
 				}
 
 				// redirect back to our settings page.
@@ -181,6 +175,43 @@ class WPC2_GDoc_Auth {
 			}
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	}
+
+	/**
+	 * Refresh current auth token if it's expired.
+	 */
+	public function refresh_auth_token() {
+		try {
+			$refresh_token = $this->client->getRefreshToken();
+			if ( ! is_null( $refresh_token ) ) {
+				$token = $this->client->fetchAccessTokenWithRefreshToken( $refresh_token );
+				$this->update_auth_token( $token );
+				return true;
+			}
+		} catch ( \Throwable $th ) {
+			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'WPC2_GDoc_Auth::refresh_auth_token() -> Caught exception' );
+			error_log( $th->getMessage() );
+			error_log( $th->getTraceAsString() );
+			return false;
+			// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+	}
+
+	/**
+	 * Update google account auth token
+	 *
+	 * @param array $token Access token.
+	 */
+	private function update_auth_token( $token ) {
+		// Set client access token.
+		$this->client->setAccessToken( $token );
+
+		// store in the token.
+		$this->options->update_access_token( $token );
+
+		// update the connection status to connected.
+		$this->options->update_connection_status( self::STATUS_CONNECTED );
 	}
 
 	/**
