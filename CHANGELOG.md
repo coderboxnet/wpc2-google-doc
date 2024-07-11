@@ -2,6 +2,11 @@
 
 ## v1.0.2 - current
 
+- **Updated:** Method `create_backup` Post id is now part of the arguments array.
+- **Added:** Method `create_file` The create a new backup file
+- **Added:** Method `update_file` The update existing backup file
+- **Added:** New filter `cbox_wpc2_gdoc_backup_post_types` to manipulate the allowed post types
+
 ## v1.0.1 - 2024-07-10
 
 - **Added:** Method `user_can_see_backup_column` to check if the current logged user can see the backup column
