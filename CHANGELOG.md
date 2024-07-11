@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.3 - current
+## v1.0.3 - 2024-07-11
 
 - **Added:** Cron job to refresh auth token
 - **Added:** Cron job to execute backup daily
