@@ -103,6 +103,7 @@ class WPC2_GDoc_Backup_Manager {
 	 */
 	public function run_backups( $post ) {
 		$args = array(
+			'post_id'      => $post->ID,
 			'file_name'    => $this->generate_backup_file_name( $post ),
 			'file_content' => $this->generate_backup_file_content( $post ),
 			'file_type'    => apply_filters( 'cbox_wpc2_gdoc_backup_file_type', 'text/plain' ),
