@@ -21,6 +21,9 @@
 // Enable our libraries autload.
 require_once 'vendor/autoload.php';
 
+// Include our background process.
+require_once 'app/jobs/wpc2-gdoc-cron-manager.php';
+
 // Init our plugin.
 $wpc2gdoc_plugin = new \CODERBOX\Wpc2GoogleDoc\WPC2_GDoc_Plugin();
 register_activation_hook( __FILE__, array( $wpc2gdoc_plugin, 'activate' ) );
@@ -30,3 +33,6 @@ register_deactivation_hook( __FILE__, array( $wpc2gdoc_plugin, 'deactivate' ) );
 
 // Execute plugin main entry point.
 add_action( 'init', array( $wpc2gdoc_plugin, 'start' ), 40 );
+
+// Setup our background process.
+add_action( 'init', 'cbox_wpc2_gdoc_setup_jobs', 40 );
