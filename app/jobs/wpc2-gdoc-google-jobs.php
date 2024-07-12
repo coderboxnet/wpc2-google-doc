@@ -9,15 +9,20 @@
  * Refresh google auth token if expired.
  */
 function wpc2_gdoc_job_refresh_google_token_func() {
+	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	$auth = \CODERBOX\Wpc2GoogleDoc\WPC2_GDoc_Auth::get_instance();
 	if ( ! $auth->is_token_valid() ) {
+		error_log( 'WP2_GDoc_Job::refresh_google_token() -> token expired' );
 		$refreshed = $auth->refresh_auth_token();
 		if ( $refreshed ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'WP2_GDoc_Job::refresh_google_token() -> updated' );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		} else {
+			error_log( 'WP2_GDoc_Job::refresh_google_token() -> unable to refresh token' );
 		}
+	} else {
+		error_log( 'WP2_GDoc_Job::refresh_google_token() -> token still valid' );
 	}
+	// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
 
 /**
