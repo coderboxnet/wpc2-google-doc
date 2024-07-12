@@ -6,7 +6,7 @@
  * Plugin Name:       Save to Google Doc
  * Plugin URI:        https://github.com/coderboxnet/wpc2-google-doc
  * Description:       Saves new WordPress posts to a Google Doc.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Coderbox
