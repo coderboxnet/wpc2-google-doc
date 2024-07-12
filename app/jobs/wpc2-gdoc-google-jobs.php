@@ -37,6 +37,25 @@ function wpc2_gdoc_register_refresh_google_token_job() {
 function wpc2_gdoc_job_gdrive_backup_func() {
 	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	error_log( 'WP2_GDoc_Job::gdrive_backup() -> running backups' );
+
+	// Get our classes.
+	$options = \CODERBOX\Wpc2GoogleDoc\WPC2_GDoc_Options::get_instance();
+	$backup  = \CODERBOX\Wpc2GoogleDoc\WPC2_GDoc_Backup_Manager::get_instance();
+
+	// WP query args.
+	$args = array(
+		'post_type' => $options->get_allowed_post_types(),
+	);
+
+	// Get our posts.
+	$posts = get_posts( $args );
+
+	// Backup.
+	foreach ( $posts as $post ) {
+		$backup->run_backups( $post );
+	}
+
+	error_log( 'WP2_GDoc_Job::gdrive_backup() -> backups completed' );
 	// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
 
@@ -46,7 +65,7 @@ function wpc2_gdoc_job_gdrive_backup_func() {
 function wpc2_gdoc_register_run_gdrive_backup_job() {
 	// Schedule wpc2_gdoc_job_refresh_google_token is not already scheduled.
 	if ( ! wp_next_scheduled( 'wpc2_gdoc_job_gdrive_backup' ) ) {
-		wp_schedule_event( time(), 'hourly', 'wpc2_gdoc_job_gdrive_backup' );
+		wp_schedule_event( time(), 'daily', 'wpc2_gdoc_job_gdrive_backup' );
 	}
 	add_action( 'wpc2_gdoc_job_gdrive_backup', 'wpc2_gdoc_job_gdrive_backup_func' );
 }
