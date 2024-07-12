@@ -128,6 +128,8 @@ class WPC2_GDoc_Admin {
 		printf( '<h2>%s</h2>', \esc_html__( 'Connection Status', 'wpc2-google-doc' ) );
 		if ( $this->auth->is_connected() && $this->auth->is_token_valid() ) {
 			printf( '<strong>%s</strong>', \esc_html__( 'CONNECTED', 'wpc2-google-doc' ) );
+		} elseif ( $this->auth->is_connected() && ! $this->auth->is_token_valid() ) {
+			printf( '<strong>%s</strong>', \esc_html__( 'TOKEN EXPIRED', 'wpc2-google-doc' ) );
 		} else {
 			$this->auth->disconnect();
 			$this->auth->setup_code_verifier();
