@@ -95,8 +95,10 @@ class WPC2_GDoc_Admin_Backup {
 
 			$content = '';
 
-			foreach ( $backup_status as $name => $status ) {
-				$content .= "<strong>{$name}:</strong> {$status}<br />\n";
+			foreach ( $backup_status as $provider => $backup ) {
+				$content .= "<strong>Provider:</strong> {$provider}<br />\n";
+				$content .= "<strong>Status:</strong> {$backup['status']}<br />\n";
+				$content .= "<strong>Date:</strong> {$backup['updated_at']}<br />\n";
 			}
 
 			// Display content in the custom column for each post .

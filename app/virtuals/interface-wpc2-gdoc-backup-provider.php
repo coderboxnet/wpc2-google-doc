@@ -35,10 +35,27 @@ interface WPC2_GDoc_Backup_Provider {
 	public function get_backup_status( int $post_id, $default_value );
 
 	/**
+	 * Get the backup updated_at meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $default_value A default value if no date if found.
+	 * @return string
+	 */
+	public function get_backup_date( $post_id, $default_value );
+
+	/**
 	 * Update the backup status meta field.
 	 *
 	 * @param int    $post_id The post id.
 	 * @param string $status The backup status.
 	 */
 	public function update_backup_status( $post_id, $status );
+
+	/**
+	 * Update the backup updated_at meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $updated_at A MySQL date format string.
+	 */
+	public function update_backup_date( $post_id, $updated_at );
 }
