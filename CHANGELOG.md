@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.4 - 2024-07-12
+
+**Updated:** Cron job `wpc2_gdoc_register_run_gdrive_backup_job` to execute post backup
+
 ## v1.0.3 - 2024-07-11
 
 - **Added:** Cron job to refresh auth token
