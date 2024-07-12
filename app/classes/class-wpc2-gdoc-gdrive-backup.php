@@ -13,8 +13,9 @@ namespace CODERBOX\Wpc2GoogleDoc;
  */
 class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 
-	private const BACKUP_POST_META_STATUS  = '_wpc2gd_gdrive_backup_status';
-	private const BACKUP_POST_META_FILE_ID = '_wpc2gd_gdrive_backup_file_id';
+	private const BACKUP_POST_META_STATUS     = '_wpc2gd_gdrive_backup_status';
+	private const BACKUP_POST_META_FILE_ID    = '_wpc2gd_gdrive_backup_file_id';
+	private const BACKUP_POST_META_UPDATED_AT = '_wpc2gd_gdrive_backup_updated_at';
 
 	/**
 	 * Singleton class instance.
@@ -157,6 +158,22 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 	}
 
 	/**
+	 * Get the backup updated_at meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $default_value A default value if no date if found.
+	 * @return string
+	 */
+	public function get_backup_date( $post_id, $default_value ) {
+		$updated_at = get_post_meta( $post_id, self::BACKUP_POST_META_UPDATED_AT, true );
+
+		if ( false === $updated_at ) {
+			return 'UNKNOWN';
+		}
+		return empty( $updated_at ) ? $default_value : $updated_at;
+	}
+
+	/**
 	 * Update the backup status meta field.
 	 *
 	 * @param int    $post_id The post id.
@@ -174,5 +191,15 @@ class WPC2_GDoc_GDrive_Backup implements WPC2_GDoc_Backup_Provider {
 	 */
 	private function update_backup_file_id( $post_id, $file_id ) {
 		update_post_meta( $post_id, self::BACKUP_POST_META_FILE_ID, $file_id );
+	}
+
+	/**
+	 * Update the backup updated_at meta field.
+	 *
+	 * @param int    $post_id The post id.
+	 * @param string $updated_at A MySQL date format string.
+	 */
+	public function update_backup_date( $post_id, $updated_at ) {
+		update_post_meta( $post_id, self::BACKUP_POST_META_UPDATED_AT, $updated_at );
 	}
 }
