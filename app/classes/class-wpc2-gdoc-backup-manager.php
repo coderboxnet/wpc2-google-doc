@@ -77,7 +77,10 @@ class WPC2_GDoc_Backup_Manager {
 	public function get_all_backup_status( $post_id ) {
 		$result = array();
 		foreach ( $this->providers as $name => $provider ) {
-			$result[ $name ] = $provider->get_backup_status( $post_id, self::BACKUP_STATUS_PENDING );
+			$result[ $name ] = array(
+				'status'     => $provider->get_backup_status( $post_id, self::BACKUP_STATUS_PENDING ),
+				'updated_at' => $provider->get_backup_date( $post_id, self::BACKUP_STATUS_PENDING ),
+			);
 		}
 		return $result;
 	}
@@ -115,6 +118,7 @@ class WPC2_GDoc_Backup_Manager {
 			} else {
 				$provider->update_backup_status( $post->ID, self::BACKUP_STATUS_FAILED );
 			}
+			$provider->update_backup_date( $post->ID, wp_date( 'Y-m-d H:i:s' ) );
 		}
 	}
 
