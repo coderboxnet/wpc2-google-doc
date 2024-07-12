@@ -1,6 +1,9 @@
 # Changelog
 
-## v1.0.6 - current
+## v1.0.6 - 2024-07-12
+
+**Added:** Backup date meta field
+**Updated:** Cron job for auth token status
 
 ## v1.0.5 - 2024-07-12
 
