@@ -44,18 +44,23 @@ function wpc2_gdoc_job_gdrive_backup_func() {
 
 	// WP query args.
 	$args = array(
-		'post_type' => $options->get_allowed_post_types(),
+		'post_type'   => $options->get_allowed_post_types(),
+		'post_status' => 'any',
+		'nopaging'    => true,
 	);
 
 	// Get our posts.
 	$posts = get_posts( $args );
+	$total = count( $posts );
+
+	error_log( "WP2_GDoc_Job::gdrive_backup() -> Found {$total} total posts to backup" );
 
 	// Backup.
 	foreach ( $posts as $post ) {
 		$backup->run_backups( $post );
 	}
 
-	error_log( 'WP2_GDoc_Job::gdrive_backup() -> backups completed' );
+	error_log( 'WP2_GDoc_Job::gdrive_backup() -> all backups completed' );
 	// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
 
