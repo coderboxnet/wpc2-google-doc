@@ -1,5 +1,7 @@
 # Changelog
 
+## v1.0.7 - current
+
 ## v1.0.6 - 2024-07-12
 
 **Added:** Backup date meta field
