@@ -1,5 +1,7 @@
 # Changelog
 
+## v1.0.8 - current
+
 ## v1.0.7 - 2024-07-13
 
 - **Added:** Method `get_expiration_time` to retrieve the token expiration time
