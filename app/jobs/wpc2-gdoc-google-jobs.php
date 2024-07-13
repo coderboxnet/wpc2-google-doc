@@ -21,6 +21,14 @@ function wpc2_gdoc_job_refresh_google_token_func() {
 		}
 	} else {
 		error_log( 'WP2_GDoc_Job::refresh_google_token() -> token still valid' );
+		$timestap = $auth->get_expiration_time();
+		$seconds  = $timestap - time();
+		$message  = "token will expire in {$seconds} seconds";
+		if ( $seconds > 60 ) {
+			$minutes = floor( $seconds / 60 );
+			$message = "token will expire in {$minutes} minutes";
+		}
+		error_log( "WP2_GDoc_Job::refresh_google_token() -> {$message}" );
 	}
 	// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
