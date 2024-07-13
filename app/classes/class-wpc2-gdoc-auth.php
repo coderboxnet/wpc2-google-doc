@@ -178,6 +178,20 @@ class WPC2_GDoc_Auth {
 	}
 
 	/**
+	 * Calculate how much is left for the token to expire.
+	 *
+	 * @return int
+	 */
+	public function get_expiration_time() {
+		$token = $this->client->getAccessToken();
+		if ( is_array( $token ) && isset( $token['created'], $token['expires_in'] ) ) {
+			$timestamp = $token['created'] + $token['expires_in'];
+			return $timestamp;
+		}
+		return 0;
+	}
+
+	/**
 	 * Refresh current auth token if it's expired.
 	 */
 	public function refresh_auth_token() {
