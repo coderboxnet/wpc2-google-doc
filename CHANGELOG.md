@@ -1,6 +1,9 @@
 # Changelog
 
-## v1.0.7 - current
+## v1.0.7 - 2024-07-13
+
+- **Added:** Method `get_expiration_time` to retrieve the token expiration time
+- **Updated:** Cron job `wpc2_gdoc_job_refresh_google_token` to display token expiration information
 
 ## v1.0.6 - 2024-07-12
 
